@@ -14,6 +14,7 @@
   ],
   "components": {
   "schemas": {
+    // Get Connection Response
     "GetConnectionsResponse": {
       "type": "object",
       "properties": {
@@ -64,7 +65,19 @@
         "nanos": { "type": "integer" }
       },
       "required": ["secs", "nanos"]
+    },
+"GetIdentityResponse": {
+  "type": "object",
+  "properties": {
+    "peer_id": { "type": "string" },
+    "public_key": { "type": "string" },
+    "public_addresses": {
+      "type": "array",
+      "items": { "$ref": "#/components/schemas/Multiaddr" }
     }
+  },
+  "required": ["peer_id", "public_key", "public_addresses"]
+}
   }
 },
   "methods": [
@@ -192,13 +205,18 @@
     },
     {
       "name": "get_identity",
-      "summary": "",
-      "tags": [],
+      "summary": "Returns the peer identity of the node. \n\n Includes the node ID, public address, and public key.",
+      "tags": [
+        {"name": "Network",
+         "description": "Methods related to network operations and peer management."}
+      ],
       "params": [],
       "result": {
-        "name": "epoch_stats",
-        "description": "",
-        "schema": {}
+        "name": "Node identity",
+        "description": "The node's peer identity including node ID, public address, and public key.",
+        "schema": {
+          "$ref":"#/components/schemas/GetIdentityResponse"
+        }
       },
       "errors": [],
       "examples": [
@@ -209,11 +227,12 @@
           "result": {
             "name": "example1",
             "value": {
-              "node_id": "9c8d9ee038b16a424a30b4fad8",
-              "public_address": "/onion3/5m3262svmddswg5q7apa5eciwxwgip5jghzv4xc2jknrh26bysfzwsyd:18141",
-              "public_key": "7a149364bb8beb7f0cc6a100350391b4debd7dbaf7880bab421f024feca02b1f"
-            }
-          }
+                "peer_id": "9c8d9ee038b16a424a30b4fad8",
+                "public_key": "7a149364bb8beb7f0cc6a100350391b4debd7dbaf7880bab421f024feca02b1f",
+                "public_addresses": [
+                  "/onion3/5m3262svmddswg5q7apa5eciwxwgip5jghzv4xc2jknrh26bysfzwsyd:18141"
+  ]
+}          }
         }
       ]
     },
@@ -412,3 +431,4 @@
     }
   ]
 }
+
